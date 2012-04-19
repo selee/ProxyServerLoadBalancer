@@ -1,0 +1,19 @@
+<perfdata appname="ProxyServer" machinename="TAD-9000">
+<status>OK</status>
+<timestamp counter="Timestamp" instance="">63182.00</timestamp>
+<hostcount counter="Host Count" instance="">0.00</hostcount>
+<clientcount counter="Client Count" instance="">0.00</clientcount>
+<cpu counter="CPU Utilization %" instance="">0.80</cpu>
+<normcpu counter="Normalized CPU Utilization %" instance="">0.20</normcpu>
+<mem counter="Heap Usage in mB" instance="">1.58</mem>
+<ctxsw counter="Context Switches Per Sec" instance="">405.83</ctxsw>
+<maxconns counter="Max Connection Count" instance="">1000.00</maxconns>
+<maxports counter="Max Port Count" instance="">11.00</maxports>
+<totalconns counter="Connection Count" instance="">0.00</totalconns>
+<msgrecvcount counter="Messages Recv Counter" instance="">0.00</msgrecvcount>
+<msgsentcount counter="Messages Sent Counter" instance="">0.00</msgsentcount>
+<msgrecvpersec counter="Messages Recv Per Second" instance="">0.00</msgrecvpersec>
+<msgsentpersec counter="Messages Sent Per Second" instance="">0.00</msgsentpersec>
+<noradconnspersec counter="Norad Connects Per Sec" instance="">0.02</noradconnspersec>
+<perfconnspersec counter="Perf Connects Per Sec" instance="">0.00</perfconnspersec>
+</perfdata>
