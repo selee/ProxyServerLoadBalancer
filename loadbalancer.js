@@ -14,17 +14,21 @@ if(prod){
 
 var lb;
 if(prod)
+{
+	console.log(certificate);
+	console.log('not really creating server');
 	lb = express.createServer({key:privateKey, cert:certificate});
+}
 else
+{
 	lb = express.createServer();
+}
 
 var testServer = express.createServer();
 var perfPort = express.createServer();
 perfPort.use(express.bodyParser());
 lb.use(express.bodyParser());
 testServer.use(express.bodyParser());
-var servers = new Array();
-var serverPorts = new Array();
 var serverData = new Array();
 
 var probabilityMax;
@@ -38,8 +42,7 @@ lb.get('/', function(req, res){
 	var failIp = req.param('fail', '');
 	if(failIp != '')
 	{
-		var index = servers.indexOf(failIp);
-		if(index >= 0)
+		if(serverData[failIp])
 		{
 			if(serverData[failIp] != null)
 			{
@@ -51,23 +54,32 @@ lb.get('/', function(req, res){
 			}
 		}
 	}
-	var ip = getServer();
-	if(ip == failIp && servers.length == 1)
+	var serv = getServer();
+	/*
+	if(ip == failIp && serverData.length ==)
 	{
-		res.send({error: 'Our only IP failed.'});
 		return;
 	}
-	while(ip == failIp)
+	*/
+	var i = 0;
+	while(serv && serv.ip + ':' + serv.port == failIp)
 	{
-		ip = getServer();
+		serv = getServer();
+		i++;
+		//magic number!
+		if(i >= 10)
+		{
+			serv = null;
+			break;
+		}
 	}
-	if(ip != null)
+	if(serv != null)
 	{
-		res.send({ip: ip, port: serverPorts[ip]});
+		res.send({ip: serv.ip, port: serv.port});
 	}
 	else
 	{
-		res.send({error: 'Something bad happened.'});
+		res.send({error: 'All the servers broke.'});
 	}
 });
 
@@ -76,12 +88,12 @@ function getServer()
 	var random = Math.random() * probabilityMax;
 	var current = 0;
 	var i;
-	for(i in servers)
+	for(i in serverData)
 	{
-		var server = serverData[servers[i]];
+		var server = serverData[i];
 		if(current + server.probability >= random)
 		{
-			return servers[i];
+			return server;
 		}
 		current += server.probability;
 	}
@@ -93,17 +105,36 @@ lb.post('/add', function(req, res){
 	var ip = req.body.ip;
 	var port = req.body.port;
 	console.log('add: ' + ip + ':' + port);
-	servers.push(ip);
-	serverPorts[ip] = port;
-	var serverJson = {};
-	//write to file
-	for(var i in serverPorts)
-	{
-		
-	}
-	serverData[ip] = new Object();
+	addIP(ip, port);
 	res.send('ok');
 });
+
+function addIP(ip, port)
+{
+	var options = {
+		host: 'localhost',
+		port: 5984,
+		path: '/relay_servers/',
+		method: 'POST',
+		headers: {'Content-Type': 'application/json'}
+	};
+	var post = http.request(options, function(response){
+		//TODO: get the actual data and parse it
+		var data = '';
+		response.on('data', function(chunk){
+			data += chunk;
+		});
+		response.on('end', function(){
+			console.log(data);
+		});
+	});
+	post.on('error', function(error) {
+		console.log('unable to connect to server: ' + error);
+	});
+	post.write(JSON.stringify({ip:ip, port:port}));
+	post.end();
+}
+
 lb.post('/remove', function(req, res){
 	//TODO: get the actual IP and parse it
 	var ip = req.body.ip;
@@ -114,72 +145,131 @@ lb.post('/remove', function(req, res){
 
 function removeIP(ip)
 {
-	if(servers.indexOf(ip) != -1)
+	var options = {
+		host: 'localhost',
+		port: 5984,
+		path: '/relay_servers/' + serverData[ip]._id + '?rev=' + serverData[ip]._rev,
+		method: 'DELETE',
+		headers: {'Content-Type': 'application/json'}
+	};
+	var del = http.request(options, function(response){
+		//TODO: get the actual data and parse it
+		var data = '';
+		response.on('data', function(chunk){
+			data += chunk;
+		});
+		response.on('end', function(){
+			console.log(data);
+		});
+	});
+	del.on('error', function(error) {
+		console.log('unable to connect to server: ' + error);
+	});
+	//del.write(JSON.stringify({ip:ip, port:serverData[server].port}));
+	del.end();
+
+	if(serverData[ip])
 	{
-		servers.splice(servers.indexOf(ip), 1);
-		serverData[ip] = null;
-		serverPorts[ip] = null;
+		delete serverData[ip];
 	}
 }
 
 //poll all servers every ? seconds
 setInterval(function(){
 	
-	for(i in servers)
-	{
-		var server = servers[i];
-		var options = {
-			host: server,
-			port: serverPorts[server],
-			path: '/'
-		};
-		var get = http.request(options, function(response){
-			//TODO: get the actual data and parse it
-			var data = '';
-			response.on('data', function(chunk){
-				data += chunk;
-			});
-			response.on('end', function(){
-				var currentElem = '';
-				var recorded = false;
-				var parser = new xml.SaxParser(function(cb) {
-					cb.onStartElementNS(function(elem, attrs, prefix, uri, namespaces) {
-						currentElem = elem;
-						recorded = false;
+	var options = {
+		host: 'localhost',
+		port: 5984,
+		path: '/relay_servers/_design/servers/_view/all'
+	};
+	var get = http.request(options, function(response){
+		//TODO: get the actual data and parse it
+		var data = '';
+		response.on('data', function(chunk){
+			data += chunk;
+		});
+		response.on('end', function(){
+			console.log(data);
+			var rows = JSON.parse(data).rows;
+			
+			var couchData = {};
+
+			for(i in rows)
+			{
+				var value = rows[i].value;
+				//value.ip, port
+				//if there is a server not in memory
+				if(!serverData[value.ip + ':' + value.port])
+				{
+					serverData[value.ip + ':' + value.port] = value;
+				}
+				couchData[rows[i].key]=value;
+			}
+			//if there is a server not in couch but in memory
+			for(server in serverData)
+			{
+				if(!couchData[server])
+					delete serverData[server];
+			}
+			for(server in serverData)
+			{
+				var options = {
+					host: serverData[server].ip,
+					port: serverData[server].port,
+					path: '/'
+				};
+				var get = http.request(options, function(response){
+					//TODO: get the actual data and parse it
+					var data = '';
+					response.on('data', function(chunk){
+						data += chunk;
 					});
-					cb.onCharacters(function(chars) {
-						
-						if(recorded == false){
-							serverData[server][currentElem] = chars;
-							recorded = true;
-						}
+					response.on('end', function(){
+						var currentElem = '';
+						var recorded = false;
+						var parser = new xml.SaxParser(function(cb) {
+							cb.onStartElementNS(function(elem, attrs, prefix, uri, namespaces) {
+								currentElem = elem;
+								recorded = false;
+							});
+							cb.onCharacters(function(chars) {
+								
+								if(recorded == false){
+									serverData[server][currentElem] = chars;
+									recorded = true;
+								}
+							});
+						});
+		
+						parser.parseString(data);
 					});
 				});
-
-				parser.parseString(data);
-			});
+				get.on('error', function(error) {
+					console.log('unable to connect to server: ' + error);
+				});
+				get.end();
+			}
+			//pause a little to make sure the parser is done
+			setTimeout(function(){
+				//don't update probabilityMax until it's done computing
+				var tempProbMax = 0;
+				//calculate percentages
+				for(var i in serverData)
+				{
+					var server = serverData[i];
+					tempProbMax += server.maxconns - server.totalconns;
+					server.probability = server.maxconns - server.totalconns;
+					server.lastupdate = server.timestamp;
+				}
+				probabilityMax = tempProbMax;
+			},
+			200);
 		});
-		get.on('error', function(error) {
-			console.log('unable to connect to server: ' + error);
-		});
-		get.end();
-	}
-	//pause a little to make sure the parser is done
-	setTimeout(function(){
-		//don't update probabilityMax until it's done computing
-		var tempProbMax = 0;
-		//calculate percentages
-		for(var i in servers)
-		{
-			var server = serverData[servers[i]];
-			var server = serverData[servers[i]];
-			tempProbMax += server.maxconns - server.totalconns;
-			server.probability = server.maxconns - server.totalconns;
-			server.lastupdate = server.timestamp;
-		}
-		probabilityMax = tempProbMax;
-	},
-	200);
+	});
+	get.on('error', function(error) {
+		console.log('unable to connect to server: ' + error);
+	});
+	get.end();
 	
 },
 //number of seconds
@@ -189,10 +279,8 @@ perfPort.get('/', function(req,res){
 	//construct XML
 	var xml = '<perfdata appname="ProxyServerLoadBalancer" machinename="PSLB01">';
 	xml += '<status>OK</status>';
-	var i;
-	for(i in servers)
+	for(ip in serverData)
 	{
-		var ip = servers[i];
 		//happens if the server has been added but not polled yet
 		if(serverData[ip].hostcount == undefined)
 			continue;
@@ -236,6 +324,6 @@ perfPort.get('/', function(req,res){
 	res.send(xml);
 });
 
-lb.listen(3000);
+lb.listen(443);
 testServer.listen(3001);
 perfPort.listen(10000);
