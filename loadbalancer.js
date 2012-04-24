@@ -4,6 +4,8 @@ var xml = require('node-xml');
 var fs = require('fs');
 var lb = express.createServer();
 var testServer = express.createServer();
+var perfPort = express.createServer();
+perfPort.use(express.bodyParser());
 lb.use(express.bodyParser());
 testServer.use(express.bodyParser());
 var servers = new Array();
@@ -18,8 +20,32 @@ testServer.get('/', function(req,res){
 });
 
 lb.get('/', function(req, res){
-	//TODO: make this work algorithmically
+	var failIp = req.param('fail', '');
+	if(failIp != '')
+	{
+		var index = servers.indexOf(failIp);
+		if(index >= 0)
+		{
+			if(serverData[failIp] != null)
+			{
+				serverData[failIp].probability -= 1;
+				if(serverData[failIp].probability <= 0)
+				{
+					removeIP(failIp);
+				}
+			}
+		}
+	}
 	var ip = getServer();
+	if(ip == failIp && servers.length == 1)
+	{
+		res.send({error: 'Our only IP failed.'});
+		return;
+	}
+	while(ip == failIp)
+	{
+		ip = getServer();
+	}
 	if(ip != null)
 	{
 		res.send({ip: ip, port: serverPorts[ip]});
@@ -67,16 +93,21 @@ lb.post('/remove', function(req, res){
 	//TODO: get the actual IP and parse it
 	var ip = req.body.ip;
 	console.log('remove: ' + ip);
+	removeIP(ip);
+	res.send('ok');
+});
+
+function removeIP(ip)
+{
 	if(servers.indexOf(ip) != -1)
 	{
 		servers.splice(servers.indexOf(ip), 1);
 		serverData[ip] = null;
 		serverPorts[ip] = null;
 	}
-	res.send('ok');
-});
+}
 
-//poll all servers every 15 seconds
+//poll all servers every ? seconds
 setInterval(function(){
 	
 	for(i in servers)
@@ -139,5 +170,57 @@ setInterval(function(){
 //number of seconds
 5000);
 
-lb.listen(3000, '69.10.20.43');
+perfPort.get('/', function(req,res){
+	//construct XML
+	var xml = '<perfdata appname="ProxyServerLoadBalancer" machinename="PSLB01">';
+	xml += '<status>OK</status>';
+	var i;
+	for(i in servers)
+	{
+		var ip = servers[i];
+		//happens if the server has been added but not polled yet
+		if(serverData[ip].hostcount == undefined)
+			continue;
+		xml += '<data ip="' + ip + '">';
+		xml += '<status>' + serverData[ip].status + '</status>';
+		xml += '<health>' + serverData[ip].probability + '</health>';
+		xml += '<hostcount counter="Host Count">' + serverData[ip].hostcount;
+		xml += '</hostcount>';
+		xml += '<clientcount counter="Client Count">' + serverData[ip].clientcount;
+		xml += '</clientcount>';
+		xml += '<cpu counter="CPU Utilization">' + serverData[ip].cpu;
+		xml += '</cpu>';
+		xml += '<normcpu counter="Normalized CPU Utilization">' + serverData[ip].normcpu;
+		xml += '</normcpu>';
+		xml += '<mem counter="Heap Usage in MB">' + serverData[ip].mem;
+		xml += '</mem>';
+		xml += '<maxconns counter="Max Connection Count">';
+		xml += serverData[ip].maxconns;
+		xml += '</maxconns>';
+		xml += '<maxports counter="Max Port Count">' + serverData[ip].maxports;
+		xml += '</maxports>';
+		xml += '<totalconns counter="Connection Count">';
+		xml += serverData[ip].totalconns;
+		xml += '</totalconns>';
+		xml += '<msgrecvcount counter="Messages Recv Counter">';
+		xml += serverData[ip].msgrecvcount;
+		xml += '</msgrecvcount>';
+		xml += '<msgsentcount counter="Messages Sent Counter">';
+		xml += serverData[ip].msgsentcount;
+		xml += '</msgsentcount>';
+		xml += '<msgrecvpersec counter="Messages Recv Per Second">';
+		xml += serverData[ip].msgrecvpersec;
+		xml += '</msgrecvpersec>';
+		xml += '<msgsentpersec counter="Messages Sent Per Second">';
+		xml += serverData[ip].msgsentpersec;
+		xml += '</msgsentpersec>';
+		xml += '</data>';
+	}
+	xml += '</perfdata>';
+	res.contentType('text/xml');
+	res.send(xml);
+});
+
+lb.listen(3000);
 testServer.listen(3001);
+perfPort.listen(10000);
