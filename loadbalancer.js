@@ -1,8 +1,23 @@
+var prod = true;
+if(process.argv.length==3 && process.argv[2]=="-d")
+        prod = false;
+
 var express = require('express');
 var http = require('http');
 var xml = require('node-xml');
 var fs = require('fs');
-var lb = express.createServer();
+
+if(prod){
+	privateKey = fs.readFileSync(__dirname+'/ssl/server.key').toString();
+	certificate = fs.readFileSync(__dirname+'/ssl/server.crt').toString();
+}
+
+var lb;
+if(prod)
+	lb = express.createServer({key:privateKey, cert:certificate});
+else
+	lb = express.createServer();
+
 var testServer = express.createServer();
 var perfPort = express.createServer();
 perfPort.use(express.bodyParser());
