@@ -119,7 +119,6 @@ function addIP(ip, port)
 		headers: {'Content-Type': 'application/json'}
 	};
 	var post = http.request(options, function(response){
-		//TODO: get the actual data and parse it
 		var data = '';
 		response.on('data', function(chunk){
 			data += chunk;
@@ -129,14 +128,12 @@ function addIP(ip, port)
 		});
 	});
 	post.on('error', function(error) {
-		console.log('unable to connect to server: ' + error);
 	});
 	post.write(JSON.stringify({ip:ip, port:port}));
 	post.end();
 }
 
 lb.post('/remove', function(req, res){
-	//TODO: get the actual IP and parse it
 	var ip = req.body.ip;
 	console.log('remove: ' + ip);
 	removeIP(ip);
@@ -153,7 +150,6 @@ function removeIP(ip)
 		headers: {'Content-Type': 'application/json'}
 	};
 	var del = http.request(options, function(response){
-		//TODO: get the actual data and parse it
 		var data = '';
 		response.on('data', function(chunk){
 			data += chunk;
@@ -163,7 +159,6 @@ function removeIP(ip)
 		});
 	});
 	del.on('error', function(error) {
-		console.log('unable to connect to server: ' + error);
 	});
 	//del.write(JSON.stringify({ip:ip, port:serverData[server].port}));
 	del.end();
@@ -183,7 +178,6 @@ setInterval(function(){
 		path: '/relay_servers/_design/servers/_view/all'
 	};
 	var get = http.request(options, function(response){
-		//TODO: get the actual data and parse it
 		var data = '';
 		response.on('data', function(chunk){
 			data += chunk;
@@ -219,7 +213,6 @@ setInterval(function(){
 					path: '/'
 				};
 				var get = http.request(options, function(response){
-					//TODO: get the actual data and parse it
 					var data = '';
 					response.on('data', function(chunk){
 						data += chunk;
@@ -245,6 +238,8 @@ setInterval(function(){
 					});
 				});
 				get.on('error', function(error) {
+					//have to get perf monitor to parse this
+					serverData[server].status = 'FAIL';
 					console.log('unable to connect to server: ' + error);
 				});
 				get.end();
