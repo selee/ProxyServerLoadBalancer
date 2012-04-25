@@ -1,0 +1,3 @@
+#! /bin/bash
+
+curl -v -s -k --key <%=client_key_file%> --cert <%=client_cert_file%> -H "Content-Type: application/json" -X POST -d '{"ip":" <%=ip_address%>", "port":"10746"}' https://<%=loadbalancer%>/add
