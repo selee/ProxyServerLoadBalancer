@@ -9,13 +9,11 @@ var https = require('https');
 var xml = require('node-xml');
 var fs = require('fs');
 
-if(prod){
-	privateKey = fs.readFileSync(__dirname+'/ssl/privatekey.pem').toString();
-	certificate = fs.readFileSync(__dirname+'/ssl/certificate.pem').toString();
-
-	console.log(privateKey);
-	console.log(certificate);
-
+if(prod)
+{
+	privateKey = fs.readFileSync(__dirname+'/ssl/server.key').toString();
+	certificate = fs.readFileSync(__dirname+'/ssl/server.crt').toString();
+	ca = fs.readFileSync(__dirname+'/ssl/certificate.pem').toString();
 }
 
 var lb = express();
@@ -317,10 +315,16 @@ perfPort.get('/', function(req,res){
 
 if(prod)
 {
-	https.createServer({key:privateKey, cert:certificate},lb).listen(443);
+	https.createServer({key:privateKey, 
+		cert:certificate,
+		ca:ca,
+		requestCert: true,
+		rejectUnauthorized: true
+	},lb).listen(443);
 }else{
 	lb.listen(3000);
 }
 
 testServer.listen(3001);
 perfPort.listen(10000);
+console.log('running');
