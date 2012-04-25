@@ -1,0 +1,11 @@
+#!monit
+
+set logfile /var/log/monit.log
+
+check process nodejs with pidfile "/var/run/loadbalancer.pid"
+	start program = "/sbin/start loadbalancer"
+	stop program = "/sbin/stop yourprogram"
+	if failed port 10000 protocol HTTP
+		request /
+		with timeout 10 seconds
+		then restart

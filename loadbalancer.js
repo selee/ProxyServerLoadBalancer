@@ -8,12 +8,17 @@ var http = require('http');
 var https = require('https');
 var xml = require('node-xml');
 var fs = require('fs');
+var syslog = require('syslog');
+var logger = syslog.createClient(514, 'localhost');
+
+logger.info('Starting load balancer.');
 
 if(prod)
 {
 	privateKey = fs.readFileSync(__dirname+'/ssl/server.key').toString();
 	certificate = fs.readFileSync(__dirname+'/ssl/server.crt').toString();
 	ca = fs.readFileSync(__dirname+'/ssl/certificate.pem').toString();
+	logger.info('Production environment, requiring certificate.');
 }
 
 var lb = express();
@@ -36,6 +41,7 @@ lb.get('/', function(req, res){
 	var failIp = req.param('fail', '');
 	if(failIp != '')
 	{
+		logger.warning('Client reported relay server at ' + failIp + ' failed.');
 		if(serverData[failIp])
 		{
 			if(serverData[failIp] != null)
@@ -43,6 +49,7 @@ lb.get('/', function(req, res){
 				serverData[failIp].probability -= 1;
 				if(serverData[failIp].probability <= 0)
 				{
+					logger.error('Too many fails. Removing server ' + failIp);
 					removeIP(failIp);
 				}
 			}
@@ -73,6 +80,7 @@ lb.get('/', function(req, res){
 	}
 	else
 	{
+		logger.emerg('No servers were found!');
 		res.send({error: 'All the servers broke.'});
 	}
 });
@@ -98,7 +106,7 @@ lb.post('/add', function(req, res){
 	//TODO: get the actual IP and parse it
 	var ip = req.body.ip;
 	var port = req.body.port;
-	console.log('add: ' + ip + ':' + port);
+	logger.info('Added relay server ' + ip + ':' + port);
 	addIP(ip, port);
 	res.send('ok');
 });
@@ -122,6 +130,7 @@ function addIP(ip, port)
 		});
 	});
 	post.on('error', function(error) {
+		logger.error('Failed to connect to couchdb to add server!');
 	});
 	post.write(JSON.stringify({ip:ip, port:port}));
 	post.end();
@@ -131,6 +140,7 @@ lb.post('/remove', function(req, res){
 	var ip = req.body.ip;
 	console.log('remove: ' + ip);
 	removeIP(ip);
+	logger.info('Removed relay server ' + ip);
 	res.send('ok');
 });
 
@@ -153,6 +163,7 @@ function removeIP(ip)
 		});
 	});
 	del.on('error', function(error) {
+		logger.error('Failed to connect to couch db for server removal!');
 	});
 	//del.write(JSON.stringify({ip:ip, port:serverData[server].port}));
 	del.end();
@@ -327,4 +338,4 @@ if(prod)
 
 testServer.listen(3001);
 perfPort.listen(10000);
-console.log('running');
+logger.log('Load balancer is now running.');
