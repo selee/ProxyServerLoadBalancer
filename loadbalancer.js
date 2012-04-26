@@ -7,10 +7,15 @@ var express = require('express');
 var http = require('http');
 var https = require('https');
 var xml = require('node-xml');
-var fs = require('fs');
 var syslog = require('syslog');
 var logger = syslog.createClient(514, 'localhost');
-
+var cluster = require('cluster');
+var fs = require('fs');
+//for connecting to relay perfmonitor
+var net = require('net');
+var couchdb = require('felix-couchdb');
+var client = couchdb.createClient(5984, 'localhost');
+var db = client.db('relay_servers');
 logger.info('Starting load balancer.');
 
 if(prod)
@@ -177,19 +182,14 @@ function removeIP(ip)
 //poll all servers every ? seconds
 setInterval(function(){
 	
-	var options = {
-		host: 'localhost',
-		port: 5984,
-		path: '/relay_servers/_design/servers/_view/all'
-	};
-	var get = http.request(options, function(response){
-		var data = '';
-		response.on('data', function(chunk){
-			data += chunk;
-		});
-		response.on('end', function(){
+		client.request('/relay_servers/_design/servers/_view/all', function(er, data){
+			console.log('data on end: ' + data);
+			if(data == undefined)
+			{
+				return;
+			}
 			console.log(data);
-			var rows = JSON.parse(data).rows;
+			var rows = data.rows;
 			
 			var couchData = {};
 
@@ -212,42 +212,42 @@ setInterval(function(){
 			}
 			for(server in serverData)
 			{
-				var options = {
-					host: serverData[server].ip,
-					port: serverData[server].port,
-					path: '/'
-				};
-				var get = http.request(options, function(response){
-					var data = '';
-					response.on('data', function(chunk){
-						data += chunk;
-					});
-					response.on('end', function(){
-						var currentElem = '';
-						var recorded = false;
-						var parser = new xml.SaxParser(function(cb) {
-							cb.onStartElementNS(function(elem, attrs, prefix, uri, namespaces) {
-								currentElem = elem;
-								recorded = false;
-							});
-							cb.onCharacters(function(chars) {
-								
-								if(recorded == false){
-									serverData[server][currentElem] = chars;
-									recorded = true;
-								}
-							});
+				var socket = net.createConnection(40910, serverData[server].ip);
+				var data = '';
+				console.log('opened socket on 40910 with server ' + serverData[server].ip);
+				socket.on('data', function(chunk){
+					data += chunk;
+				}).on('end', function(){
+					if(data == undefined)
+					{
+						return;
+					}
+
+					//console.log("Server Data:\n" + data);
+					var currentElem = '';
+					var recorded = false;
+					var parser = new xml.SaxParser(function(cb) {
+						cb.onStartElementNS(function(elem, attrs, prefix, uri, namespaces) {
+							currentElem = elem;
+							recorded = false;
 						});
-		
-						parser.parseString(data);
+						cb.onCharacters(function(chars) {
+							
+							if(recorded == false){
+								serverData[server][currentElem] = chars;
+								recorded = true;
+							}
+						});
 					});
+	
+					parser.parseString(data);
 				});
-				get.on('error', function(error) {
+				socket.on('error', function(error) {
 					//have to get perf monitor to parse this
 					serverData[server].status = 'FAIL';
 					console.log('unable to connect to server: ' + error);
 				});
-				get.end();
+				socket.end();
 			}
 			//pause a little to make sure the parser is done
 			setTimeout(function(){
@@ -265,11 +265,6 @@ setInterval(function(){
 			},
 			200);
 		});
-	});
-	get.on('error', function(error) {
-		console.log('unable to connect to server: ' + error);
-	});
-	get.end();
 	
 },
 //number of seconds
@@ -324,18 +319,32 @@ perfPort.get('/', function(req,res){
 	res.send(xml);
 });
 
-if(prod)
+//start clustered service
+for(var i = 0; i < 4; i++)
 {
-	https.createServer({key:privateKey, 
-		cert:certificate,
-		ca:ca,
-		requestCert: true,
-		rejectUnauthorized: true
-	},lb).listen(443);
-}else{
-	lb.listen(3000);
+	if(cluster.isMaster)
+	{
+		cluster.fork();
+		cluster.on('death', function(worker){
+			logger.info('Worker thread died, restarting.');
+			cluster.fork();
+		});
+	}
+	else
+	{
+		if(prod)
+		{
+			https.createServer({key:privateKey, 
+				cert:certificate,
+				ca:ca,
+				requestCert: true,
+				rejectUnauthorized: true
+			},lb).listen(443);
+		}else{
+			lb.listen(3000);
+		}
+	}
 }
-
-testServer.listen(3001);
+testServer.listen(4910);
 perfPort.listen(10000);
 logger.log('Load balancer is now running.');
