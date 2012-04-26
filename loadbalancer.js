@@ -15,6 +15,14 @@ var fs = require('fs');
 var net = require('net');
 var couchdb = require('felix-couchdb');
 var client = couchdb.createClient(5984, 'localhost');
+
+client.request({
+	method: 'PUT',
+	path: '/relay_servers'
+}, function(data){
+	console.log('creating relay server db: ' + data.reason);
+});
+
 var db = client.db('relay_servers');
 logger.info('Starting load balancer.');
 
