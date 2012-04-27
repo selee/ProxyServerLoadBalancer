@@ -15,15 +15,8 @@ var fs = require('fs');
 var net = require('net');
 var couchdb = require('felix-couchdb');
 var client = couchdb.createClient(5984, 'localhost');
-
-client.request({
-	method: 'PUT',
-	path: '/relay_servers'
-}, function(data){
-	console.log('creating relay server db: ' + data.reason);
-});
-
 var db = client.db('relay_servers');
+
 logger.info('Starting load balancer.');
 
 if(prod)
@@ -191,7 +184,6 @@ function removeIP(ip)
 setInterval(function(){
 	
 		client.request('/relay_servers/_design/servers/_view/all', function(er, data){
-			console.log('data on end: ' + data);
 			if(data == undefined)
 			{
 				return;
@@ -253,7 +245,7 @@ setInterval(function(){
 				socket.on('error', function(error) {
 					//have to get perf monitor to parse this
 					serverData[server].status = 'FAIL';
-					console.log('unable to connect to server: ' + error);
+					logger.error('Unable to connect to server ' + serverData[server].ip + serverData[server].port);
 				});
 				socket.end();
 			}
@@ -328,10 +320,36 @@ perfPort.get('/', function(req,res){
 });
 
 //start clustered service
+
 for(var i = 0; i < 4; i++)
 {
-	if(cluster.isMaster)
+	if(cluster.isMaster && i == 0)
 	{
+		client.request({
+			method: 'PUT',
+			path: '/relay_servers'
+		}, function(data){
+			console.log('creating relay server db.');
+		});
+
+		console.log('blah');
+		setTimeout(function(){
+			client.request({
+				path: '/relay_servers/_design/servers',
+				method: 'PUT',
+				data: {
+					language: 'javascript',
+					views: {
+						all:{
+							map: "function(doc) { emit(doc.ip + ':' + doc.port, doc) }"
+						}
+					}	
+				}
+			}, function(data){
+				console.log('creating relay server view.');
+			});
+		}, 1000);
+	} if(cluster.isMaster){
 		cluster.fork();
 		cluster.on('death', function(worker){
 			logger.info('Worker thread died, restarting.');
@@ -351,8 +369,10 @@ for(var i = 0; i < 4; i++)
 		}else{
 			lb.listen(3000);
 		}
+
 	}
 }
+
 testServer.listen(4910);
 perfPort.listen(10000);
 logger.log('Load balancer is now running.');
