@@ -1,62 +1,34 @@
-Certificate:
-    Data:
-        Version: 3 (0x2)
-        Serial Number: 64206 (0xface)
-        Signature Algorithm: sha1WithRSAEncryption
-        Issuer: C=US, ST=California, L=San Francisco, O=IGN Entertainment, OU=GameSpy Technology, CN=ProxyServerLoadBalancer/emailAddress=tdasch@ign.com
-        Validity
-            Not Before: Apr 25 00:22:31 2012 GMT
-            Not After : Apr 25 00:22:31 2013 GMT
-        Subject: C=US, ST=California, O=IGN Entertainment, OU=GameSpy Technology, CN=ProxyServer/emailAddress=selee@ign.com
-        Subject Public Key Info:
-            Public Key Algorithm: rsaEncryption
-                Public-Key: (512 bit)
-                Modulus:
-                    00:d2:cb:e2:b8:a6:3b:15:99:77:0e:47:8b:2e:e7:
-                    97:b3:ed:f2:d4:44:36:53:d4:51:b0:3e:92:02:92:
-                    69:17:b4:3d:74:52:d2:fa:52:5f:10:b4:ae:05:a4:
-                    78:f9:50:d7:77:aa:00:88:e6:c5:fd:3a:73:0b:53:
-                    8d:97:f8:69:a5
-                Exponent: 65537 (0x10001)
-        X509v3 extensions:
-            X509v3 Basic Constraints: 
-                CA:FALSE
-            Netscape Comment: 
-                OpenSSL Generated Certificate
-            X509v3 Subject Key Identifier: 
-                F5:89:F5:0D:14:03:63:59:E7:68:7F:A0:CA:76:CD:76:3C:E3:03:42
-            X509v3 Authority Key Identifier: 
-                DirName:/C=US/ST=California/L=San Francisco/O=IGN Entertainment/OU=GameSpy Technology/CN=ProxyServerLoadBalancer/emailAddress=tdasch@ign.com
-                serial:8A:12:B6:36:76:AD:82:4B
-
-    Signature Algorithm: sha1WithRSAEncryption
-        77:d7:3b:0d:66:39:cb:a8:4d:57:0f:ae:c7:07:29:6d:6a:80:
-        69:3d:82:d7:3c:5d:1f:3d:b0:30:44:0c:cc:9a:1d:57:1e:87:
-        72:df:db:83:a5:67:4a:58:5c:f0:d3:68:86:85:48:11:d0:1c:
-        47:52:f4:61:9d:1b:ca:a1:61:cc:cb:b7:27:25:39:7f:d7:f5:
-        7a:2f:d5:61:6c:bd:f1:f6:c7:b5:a6:0b:91:b9:a4:eb:c8:b3:
-        99:9c:d4:14:a1:95:6a:c5:ad:26:47:af:6a:b9:9d:b3:90:0a:
-        7e:22:53:9e:fb:b8:7f:27:cd:73:44:d2:53:62:ea:3a:c6:40:
-        09:c7
 -----BEGIN CERTIFICATE-----
-MIIDrTCCAxagAwIBAgIDAPrOMA0GCSqGSIb3DQEBBQUAMIG0MQswCQYDVQQGEwJV
-UzETMBEGA1UECAwKQ2FsaWZvcm5pYTEWMBQGA1UEBwwNU2FuIEZyYW5jaXNjbzEa
-MBgGA1UECgwRSUdOIEVudGVydGFpbm1lbnQxGzAZBgNVBAsMEkdhbWVTcHkgVGVj
-aG5vbG9neTEgMB4GA1UEAwwXUHJveHlTZXJ2ZXJMb2FkQmFsYW5jZXIxHTAbBgkq
-hkiG9w0BCQEWDnRkYXNjaEBpZ24uY29tMB4XDTEyMDQyNTAwMjIzMVoXDTEzMDQy
-NTAwMjIzMVowgY8xCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRow
-GAYDVQQKDBFJR04gRW50ZXJ0YWlubWVudDEbMBkGA1UECwwSR2FtZVNweSBUZWNo
-bm9sb2d5MRQwEgYDVQQDDAtQcm94eVNlcnZlcjEcMBoGCSqGSIb3DQEJARYNc2Vs
-ZWVAaWduLmNvbTBcMA0GCSqGSIb3DQEBAQUAA0sAMEgCQQDSy+K4pjsVmXcOR4su
-55ez7fLURDZT1FGwPpICkmkXtD10UtL6Ul8QtK4FpHj5UNd3qgCI5sX9OnMLU42X
-+GmlAgMBAAGjggEyMIIBLjAJBgNVHRMEAjAAMCwGCWCGSAGG+EIBDQQfFh1PcGVu
-U1NMIEdlbmVyYXRlZCBDZXJ0aWZpY2F0ZTAdBgNVHQ4EFgQU9Yn1DRQDY1nnaH+g
-ynbNdjzjA0IwgdMGA1UdIwSByzCByKGBuqSBtzCBtDELMAkGA1UEBhMCVVMxEzAR
-BgNVBAgMCkNhbGlmb3JuaWExFjAUBgNVBAcMDVNhbiBGcmFuY2lzY28xGjAYBgNV
-BAoMEUlHTiBFbnRlcnRhaW5tZW50MRswGQYDVQQLDBJHYW1lU3B5IFRlY2hub2xv
-Z3kxIDAeBgNVBAMMF1Byb3h5U2VydmVyTG9hZEJhbGFuY2VyMR0wGwYJKoZIhvcN
-AQkBFg50ZGFzY2hAaWduLmNvbYIJAIoStjZ2rYJLMA0GCSqGSIb3DQEBBQUAA4GB
-AHfXOw1mOcuoTVcPrscHKW1qgGk9gtc8XR89sDBEDMyaHVceh3Lf24OlZ0pYXPDT
-aIaFSBHQHEdS9GGdG8qhYczLtyclOX/X9Xov1WFsvfH2x7WmC5G5pOvIs5mc1BSh
-lWrFrSZHr2q5nbOQCn4iU577uH8nzXNE0lNi6jrGQAnH
+MIIF2jCCA8ICAQEwDQYJKoZIhvcNAQEFBQAwga4xCzAJBgNVBAYTAlVTMRMwEQYD
+VQQIDApDYWxpZm9ybmlhMRYwFAYDVQQHDA1TYW4gRnJhbmNpc2NvMRowGAYDVQQK
+DBFJR04gRW50ZXJ0YWlubWVudDEVMBMGA1UECwwMR2FtZVNweSBUZWNoMSAwHgYD
+VQQDDBdQcm94eVNlcnZlckxvYWRCYWxhbmNlcjEdMBsGCSqGSIb3DQEJARYOdGRh
+c2NoQGlnbi5jb20wIBcNMTIwNDI2MjM1NDE0WhgPMjExMjA0MDIyMzU0MTRaMIG0
+MQswCQYDVQQGEwJVUzETMBEGA1UECAwKQ2FsaWZvcm5pYTEWMBQGA1UEBwwNU2Fu
+IEZyYW5jaXNjbzEaMBgGA1UECgwRSUdOIEVudGVydGFpbm1lbnQxFTATBgNVBAsM
+DEdhbWVTcHkgVGVjaDEmMCQGA1UEAwwdUHJveHlTZXJ2ZXJMb2FkQmFsYW5jZXJD
+bGllbnQxHTAbBgkqhkiG9w0BCQEWDnRkYXNjaEBpZ24uY29tMIICIjANBgkqhkiG
+9w0BAQEFAAOCAg8AMIICCgKCAgEA1r5nvh5LwTL0RP+5JwFfPeu7OqXQVM5Rdhud
+LqjVrKhw/x4HXvj5TQudkhKibHzT4WrBuFubMWUILQYhn0v7s+50MftKuL9B4pSh
+4K6u+0bwBMbzXVzeTUlaDVjr52GRhmeMWZVRTF38SKG76IJh66LicIEKIdImRTbx
+d6SI3H4QY+8xGtJlbhzDFbwGTuUHO/7JsWE7/H897RObZVFI2nFg985+T/Hifj5z
+jI6c8ZyZzydqOrGXexTqNDS2JFvF58vh5QNhIfR6PeUpZcj6dGuIN2dvnLjNCXIU
+asxwy1bvv4XsyBcTSWLaNyyOm/mzkJeQxS1VnitTT+L3qteO5UtNljEJxgAvxDl8
+f19H+BGKn8YPRt3K+IIRL7T+ItEmYJVGIkVmgbP+haJuJSSMYIApU7vFTgeVdkzZ
+DVJ0LEFbkszBPyGVAOveus/XUcoSh5pl0N1sHxfj5aKuG9jQDbADT4pR0+RUYUwL
+Le0DUjhNbD5QQ3xEijlbh6BDpnvbCu+Ab75ExCDNi9olnDtrMwkJPvXLXz+zcQ85
+CN5YlVAQ8Xvy1YlRB6Tq8OlGND+MYR7TwbkuxnZrus0huzmD/Ixl7tPyRz2G03/7
+848E+ijG5o1qbSSlhs+fbZFyxqbxWzcEipQ5E7+ltQkRUK6BDONTMxE5p1vb+hh0
+Yv0IzekCAwEAATANBgkqhkiG9w0BAQUFAAOCAgEAvJOGpj5Y2v2gr5G+z+d8jXxl
+f3TxwMSHjX7R/ToaS7YYIywVLYsIreHRtGtGPzpWCAfba+KmPT+1kj2KxvCAsxUe
+rpTTGyXpkvA2+L6xAh1cZOdkO1o0PWA5mF1oHVXyVfDfexy+QIkNzFyyzFb5Mtp5
+jjCULuf2RM3SZDm7LUZfzXuzYY31jwEthJa6OiLILSzZVzeODkZiz0Gg7YBmUicg
+SNTiBlWfiqJ9fN38IOBaPg9hk6CYQsb8esHBKM3R0a91mVkSlyYMc2+1yvSKFSEi
+tCjMjrMBoJ0NvKI5rw8XNz/buSmiDT7F/qiulc92kECJnE+L9OnVxSLJZbjHJsTo
+HYh9/duAI46kXPlOUe5IJgMWfu4kuFhVyM8nNDqThKgiT8PpyLrrfCy2bOWl61Sh
+eVqfr36hcsYS5j8o7b72psiGC594lIwLTrEuXTndoHuQ7pE+iati2COZD2qkwmfV
+iYp5Fhtay/w6kJm85wuOa16tDbaO4f2ZE/1QplR+14dNbAH4QlDaNjefmRTIoD5x
+qh84PjnIB9QeB+ozmzDsUIXjQQjpKqovQGmqZhO1MHw4cXKkjqCbNHJpXDWNHSfh
+rQZ+9ICkxoZtryA1R4+37m5yGZYTYwpjBysvgP7wDYL2OkvjhF/eKj/SJCR4tqd1
+v+Bp0zu2MtDyKG/aAeY=
 -----END CERTIFICATE-----

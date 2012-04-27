@@ -30,7 +30,7 @@ if(prod)
 {
 	privateKey = fs.readFileSync(__dirname+'/ssl/server.key').toString();
 	certificate = fs.readFileSync(__dirname+'/ssl/server.crt').toString();
-	ca = fs.readFileSync(__dirname+'/ssl/certificate.pem').toString();
+	ca = fs.readFileSync(__dirname+'/ssl/ca.crt').toString();
 	logger.info('Production environment, requiring certificate.');
 }
 
@@ -327,6 +327,7 @@ perfPort.get('/', function(req,res){
 	res.send(xml);
 });
 
+/*
 //start clustered service
 for(var i = 0; i < 4; i++)
 {
@@ -339,7 +340,7 @@ for(var i = 0; i < 4; i++)
 		});
 	}
 	else
-	{
+	{*/
 		if(prod)
 		{
 			https.createServer({key:privateKey, 
@@ -351,8 +352,8 @@ for(var i = 0; i < 4; i++)
 		}else{
 			lb.listen(3000);
 		}
-	}
-}
-testServer.listen(4910);
+//	}
+//}
+//testServer.listen(4910);
 perfPort.listen(10000);
 logger.log('Load balancer is now running.');
