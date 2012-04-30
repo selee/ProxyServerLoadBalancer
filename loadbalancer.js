@@ -16,7 +16,7 @@ var net = require('net');
 var couchdb = require('felix-couchdb');
 var client = couchdb.createClient(5984, 'localhost');
 var db = client.db('relay_servers');
-
+var reqPerGame = {};
 logger.info('Starting load balancer.');
 
 if(prod)
@@ -82,6 +82,15 @@ lb.get('/', function(req, res){
 	}
 	if(serv != null)
 	{
+		var gameId = req.param('gameId', '');
+		if(gameId != '')
+		{
+			if(reqPerGame[gameId] == undefined)
+			{
+				reqPerGame[gameId] = 0;
+			}
+			reqPerGame[gameId]++;
+		}
 		res.send({ip: serv.ip, port: serv.port});
 	}
 	else
@@ -240,6 +249,7 @@ setInterval(function(){
 						});
 					});
 	
+					console.log(data);
 					parser.parseString(data);
 				});
 				socket.on('error', function(error) {
@@ -267,8 +277,69 @@ setInterval(function(){
 		});
 	
 },
-//number of seconds
+//number of milliseconds
 5000);
+
+//60 second timer to send stats to stats collector
+setInterval(function()
+{
+	var stats = {};
+	stats.totalconns = 0;
+	stats.msgpersec = 0;
+	stats.remainconns = 0;
+	for(ip in serverData)
+	{
+		stats.remainconns += serverData[ip].probability;
+		stats.totalconns += serverData[ip].totalconns;
+		stats.msgpersec += serverData[ip].msgsentpersec;
+	}
+	
+	
+	var options = {
+		host: 'metrics.gamespy.net',
+		port: 80,
+		path: '/analytics/5823/relay_stats',
+		method: 'POST',
+		headers: {'Content-Type': 'application/json'}
+	};
+	var post = http.request(options, function(response){
+		var data = '';
+		response.on('data', function(chunk){
+			data += chunk;
+		});
+		response.on('end', function(){
+			console.log(data);
+		});
+	});
+	post.on('error', function(error) {
+		logger.error('Could not connect to metrics.gamespy.net');
+	});
+	post.write(JSON.stringify(stats));
+	post.end();
+	for (id in reqPerGame)
+	{
+		options.path = '/analytics/' + id + '/relay_reqs';
+
+		post = http.request(options, function(response){
+			var data = '';
+			response.on('data', function(chunk){
+				data += chunk;
+			});
+			response.on('end', function(){
+				console.log(data);
+			});
+		});
+		post.on('error', function(error) {
+			logger.error('Could not connect to metrics.gamespy.net');
+		});
+		post.write(JSON.stringify({relay_requests: reqPerGame[id]}));
+		post.end();
+		reqPerGame[id] = 0;
+	}
+
+},
+60000);
+//number of milliseconds
 
 perfPort.get('/', function(req,res){
 	//construct XML
@@ -349,7 +420,7 @@ for(var i = 0; i < numCluster; i++)
 				console.log('creating relay server view.');
 			});
 		}, 1000);
-	} if(cluster.isMaster){
+	} if(cluster.isMaster && prod){
 		cluster.fork();
 		cluster.on('death', function(worker){
 			logger.info('Worker thread died, restarting.');
