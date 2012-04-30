@@ -321,8 +321,8 @@ perfPort.get('/', function(req,res){
 
 
 //start clustered service
-
-for(var i = 0; i < 4; i++)
+var numCluster = prod ? 4 : 1;
+for(var i = 0; i < numCluster; i++)
 {
 	if(cluster.isMaster && i == 0)
 	{
@@ -333,7 +333,6 @@ for(var i = 0; i < 4; i++)
 			console.log('creating relay server db.');
 		});
 
-		console.log('blah');
 		setTimeout(function(){
 			client.request({
 				path: '/relay_servers/_design/servers',
