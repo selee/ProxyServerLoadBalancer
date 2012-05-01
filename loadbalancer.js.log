@@ -1,0 +1,302 @@
+creating relay server db.
+creating relay server view.
+{ total_rows: 1,
+  offset: 0,
+  rows: 
+   [ { id: 'de59b27d964ff24aee86fc765d00121a',
+       key: '127.0.0.1:10746',
+       value: [Object] } ] }
+opened socket on 40910 with server 127.0.0.1
+<?xml version="1.0" encoding="UTF-8" ?>
+<perfdata appname="ProxyServer" machinename="selee-dev.localdomain">
+ <status>OK</status>
+ <hostcount counter="Host Count" instance="">0.00</hostcount>
+ <clientcount counter="Client Count" instance="">0.00</clientcount>
+ <cpu counter="CPU Utilization %" instance="">0.70</cpu>
+ <normcpu counter="Normalized CPU Utilization %" instance="">0.18</normcpu>
+ <mem counter="Heap Usage in mB" instance="">1.58</mem>
+ <ctxsw counter="Context Switches Per Sec" instance="">399.65</ctxsw>
+ <maxconns counter="Max Connection Count" instance="">1000.00</maxconns>
+ <maxports counter="Max Port Count" instance="">11.00</maxports>
+ <timestamp counter="Timestamp" instance="">978588.00</timestamp>
+ <msgrecvcount counter="Messages Recv Counter" instance="">0.00</msgrecvcount>
+ <msgsentcount counter="Messages Sent Counter" instance="">0.00</msgsentcount>
+ <totalconns counter="Connection Count" instance="">0.00</totalconns>
+ <msgrecvpersec counter="Messages Recv Per Second" instance="">0.00</msgrecvpersec>
+ <msgsentpersec counter="Messages Sent Per Second" instance="">0.00</msgsentpersec>
+ <bytessentcount counter="Bytes Sent Counter" instance="">0.00</bytessentcount>
+ <bytessentpersec counter="Bytes Sent Per Second" instance="">0.00</bytessentpersec>
+ <noradconnspersec counter="Norad Connects Per Sec" instance="">0.00</noradconnspersec>
+ <zero counter="This is zero" instance="">0.00</zero>
+</perfdata>
+
+{ total_rows: 1,
+  offset: 0,
+  rows: 
+   [ { id: 'de59b27d964ff24aee86fc765d00121a',
+       key: '127.0.0.1:10746',
+       value: [Object] } ] }
+opened socket on 40910 with server 127.0.0.1
+<?xml version="1.0" encoding="UTF-8" ?>
+<perfdata appname="ProxyServer" machinename="selee-dev.localdomain">
+ <status>OK</status>
+ <hostcount counter="Host Count" instance="">0.00</hostcount>
+ <clientcount counter="Client Count" instance="">0.00</clientcount>
+ <cpu counter="CPU Utilization %" instance="">0.70</cpu>
+ <normcpu counter="Normalized CPU Utilization %" instance="">0.18</normcpu>
+ <mem counter="Heap Usage in mB" instance="">1.58</mem>
+ <ctxsw counter="Context Switches Per Sec" instance="">399.65</ctxsw>
+ <maxconns counter="Max Connection Count" instance="">1000.00</maxconns>
+ <maxports counter="Max Port Count" instance="">11.00</maxports>
+ <timestamp counter="Timestamp" instance="">978588.00</timestamp>
+ <msgrecvcount counter="Messages Recv Counter" instance="">0.00</msgrecvcount>
+ <msgsentcount counter="Messages Sent Counter" instance="">0.00</msgsentcount>
+ <totalconns counter="Connection Count" instance="">0.00</totalconns>
+ <msgrecvpersec counter="Messages Recv Per Second" instance="">0.00</msgrecvpersec>
+ <msgsentpersec counter="Messages Sent Per Second" instance="">0.00</msgsentpersec>
+ <bytessentcount counter="Bytes Sent Counter" instance="">0.00</bytessentcount>
+ <bytessentpersec counter="Bytes Sent Per Second" instance="">0.00</bytessentpersec>
+ <noradconnspersec counter="Norad Connects Per Sec" instance="">0.00</noradconnspersec>
+ <zero counter="This is zero" instance="">0.00</zero>
+</perfdata>
+
+{ total_rows: 1,
+  offset: 0,
+  rows: 
+   [ { id: 'de59b27d964ff24aee86fc765d00121a',
+       key: '127.0.0.1:10746',
+       value: [Object] } ] }
+opened socket on 40910 with server 127.0.0.1
+<?xml version="1.0" encoding="UTF-8" ?>
+<perfdata appname="ProxyServer" machinename="selee-dev.localdomain">
+ <status>OK</status>
+ <hostcount counter="Host Count" instance="">0.00</hostcount>
+ <clientcount counter="Client Count" instance="">0.00</clientcount>
+ <cpu counter="CPU Utilization %" instance="">0.70</cpu>
+ <normcpu counter="Normalized CPU Utilization %" instance="">0.18</normcpu>
+ <mem counter="Heap Usage in mB" instance="">1.58</mem>
+ <ctxsw counter="Context Switches Per Sec" instance="">399.65</ctxsw>
+ <maxconns counter="Max Connection Count" instance="">1000.00</maxconns>
+ <maxports counter="Max Port Count" instance="">11.00</maxports>
+ <timestamp counter="Timestamp" instance="">978588.00</timestamp>
+ <msgrecvcount counter="Messages Recv Counter" instance="">0.00</msgrecvcount>
+ <msgsentcount counter="Messages Sent Counter" instance="">0.00</msgsentcount>
+ <totalconns counter="Connection Count" instance="">0.00</totalconns>
+ <msgrecvpersec counter="Messages Recv Per Second" instance="">0.00</msgrecvpersec>
+ <msgsentpersec counter="Messages Sent Per Second" instance="">0.00</msgsentpersec>
+ <bytessentcount counter="Bytes Sent Counter" instance="">0.00</bytessentcount>
+ <bytessentpersec counter="Bytes Sent Per Second" instance="">0.00</bytessentpersec>
+ <noradconnspersec counter="Norad Connects Per Sec" instance="">0.00</noradconnspersec>
+ <zero counter="This is zero" instance="">0.00</zero>
+</perfdata>
+
+{ total_rows: 1,
+  offset: 0,
+  rows: 
+   [ { id: 'de59b27d964ff24aee86fc765d00121a',
+       key: '127.0.0.1:10746',
+       value: [Object] } ] }
+opened socket on 40910 with server 127.0.0.1
+<?xml version="1.0" encoding="UTF-8" ?>
+<perfdata appname="ProxyServer" machinename="selee-dev.localdomain">
+ <status>OK</status>
+ <hostcount counter="Host Count" instance="">0.00</hostcount>
+ <clientcount counter="Client Count" instance="">0.00</clientcount>
+ <cpu counter="CPU Utilization %" instance="">0.70</cpu>
+ <normcpu counter="Normalized CPU Utilization %" instance="">0.18</normcpu>
+ <mem counter="Heap Usage in mB" instance="">1.58</mem>
+ <ctxsw counter="Context Switches Per Sec" instance="">399.65</ctxsw>
+ <maxconns counter="Max Connection Count" instance="">1000.00</maxconns>
+ <maxports counter="Max Port Count" instance="">11.00</maxports>
+ <timestamp counter="Timestamp" instance="">978588.00</timestamp>
+ <msgrecvcount counter="Messages Recv Counter" instance="">0.00</msgrecvcount>
+ <msgsentcount counter="Messages Sent Counter" instance="">0.00</msgsentcount>
+ <totalconns counter="Connection Count" instance="">0.00</totalconns>
+ <msgrecvpersec counter="Messages Recv Per Second" instance="">0.00</msgrecvpersec>
+ <msgsentpersec counter="Messages Sent Per Second" instance="">0.00</msgsentpersec>
+ <bytessentcount counter="Bytes Sent Counter" instance="">0.00</bytessentcount>
+ <bytessentpersec counter="Bytes Sent Per Second" instance="">0.00</bytessentpersec>
+ <noradconnspersec counter="Norad Connects Per Sec" instance="">0.00</noradconnspersec>
+ <zero counter="This is zero" instance="">0.00</zero>
+</perfdata>
+
+{ total_rows: 1,
+  offset: 0,
+  rows: 
+   [ { id: 'de59b27d964ff24aee86fc765d00121a',
+       key: '127.0.0.1:10746',
+       value: [Object] } ] }
+opened socket on 40910 with server 127.0.0.1
+<?xml version="1.0" encoding="UTF-8" ?>
+<perfdata appname="ProxyServer" machinename="selee-dev.localdomain">
+ <status>OK</status>
+ <hostcount counter="Host Count" instance="">0.00</hostcount>
+ <clientcount counter="Client Count" instance="">0.00</clientcount>
+ <cpu counter="CPU Utilization %" instance="">0.70</cpu>
+ <normcpu counter="Normalized CPU Utilization %" instance="">0.18</normcpu>
+ <mem counter="Heap Usage in mB" instance="">1.58</mem>
+ <ctxsw counter="Context Switches Per Sec" instance="">399.65</ctxsw>
+ <maxconns counter="Max Connection Count" instance="">1000.00</maxconns>
+ <maxports counter="Max Port Count" instance="">11.00</maxports>
+ <timestamp counter="Timestamp" instance="">978588.00</timestamp>
+ <msgrecvcount counter="Messages Recv Counter" instance="">0.00</msgrecvcount>
+ <msgsentcount counter="Messages Sent Counter" instance="">0.00</msgsentcount>
+ <totalconns counter="Connection Count" instance="">0.00</totalconns>
+ <msgrecvpersec counter="Messages Recv Per Second" instance="">0.00</msgrecvpersec>
+ <msgsentpersec counter="Messages Sent Per Second" instance="">0.00</msgsentpersec>
+ <bytessentcount counter="Bytes Sent Counter" instance="">0.00</bytessentcount>
+ <bytessentpersec counter="Bytes Sent Per Second" instance="">0.00</bytessentpersec>
+ <noradconnspersec counter="Norad Connects Per Sec" instance="">0.00</noradconnspersec>
+ <zero counter="This is zero" instance="">0.00</zero>
+</perfdata>
+
+{ total_rows: 1,
+  offset: 0,
+  rows: 
+   [ { id: 'de59b27d964ff24aee86fc765d00121a',
+       key: '127.0.0.1:10746',
+       value: [Object] } ] }
+opened socket on 40910 with server 127.0.0.1
+<?xml version="1.0" encoding="UTF-8" ?>
+<perfdata appname="ProxyServer" machinename="selee-dev.localdomain">
+ <status>OK</status>
+ <hostcount counter="Host Count" instance="">0.00</hostcount>
+ <clientcount counter="Client Count" instance="">0.00</clientcount>
+ <cpu counter="CPU Utilization %" instance="">0.70</cpu>
+ <normcpu counter="Normalized CPU Utilization %" instance="">0.18</normcpu>
+ <mem counter="Heap Usage in mB" instance="">1.58</mem>
+ <ctxsw counter="Context Switches Per Sec" instance="">399.65</ctxsw>
+ <maxconns counter="Max Connection Count" instance="">1000.00</maxconns>
+ <maxports counter="Max Port Count" instance="">11.00</maxports>
+ <timestamp counter="Timestamp" instance="">978588.00</timestamp>
+ <msgrecvcount counter="Messages Recv Counter" instance="">0.00</msgrecvcount>
+ <msgsentcount counter="Messages Sent Counter" instance="">0.00</msgsentcount>
+ <totalconns counter="Connection Count" instance="">0.00</totalconns>
+ <msgrecvpersec counter="Messages Recv Per Second" instance="">0.00</msgrecvpersec>
+ <msgsentpersec counter="Messages Sent Per Second" instance="">0.00</msgsentpersec>
+ <bytessentcount counter="Bytes Sent Counter" instance="">0.00</bytessentcount>
+ <bytessentpersec counter="Bytes Sent Per Second" instance="">0.00</bytessentpersec>
+ <noradconnspersec counter="Norad Connects Per Sec" instance="">0.00</noradconnspersec>
+ <zero counter="This is zero" instance="">0.00</zero>
+</perfdata>
+
+{ total_rows: 1,
+  offset: 0,
+  rows: 
+   [ { id: 'de59b27d964ff24aee86fc765d00121a',
+       key: '127.0.0.1:10746',
+       value: [Object] } ] }
+opened socket on 40910 with server 127.0.0.1
+<?xml version="1.0" encoding="UTF-8" ?>
+<perfdata appname="ProxyServer" machinename="selee-dev.localdomain">
+ <status>OK</status>
+ <hostcount counter="Host Count" instance="">0.00</hostcount>
+ <clientcount counter="Client Count" instance="">0.00</clientcount>
+ <cpu counter="CPU Utilization %" instance="">0.70</cpu>
+ <normcpu counter="Normalized CPU Utilization %" instance="">0.18</normcpu>
+ <mem counter="Heap Usage in mB" instance="">1.58</mem>
+ <ctxsw counter="Context Switches Per Sec" instance="">399.65</ctxsw>
+ <maxconns counter="Max Connection Count" instance="">1000.00</maxconns>
+ <maxports counter="Max Port Count" instance="">11.00</maxports>
+ <timestamp counter="Timestamp" instance="">978588.00</timestamp>
+ <msgrecvcount counter="Messages Recv Counter" instance="">0.00</msgrecvcount>
+ <msgsentcount counter="Messages Sent Counter" instance="">0.00</msgsentcount>
+ <totalconns counter="Connection Count" instance="">0.00</totalconns>
+ <msgrecvpersec counter="Messages Recv Per Second" instance="">0.00</msgrecvpersec>
+ <msgsentpersec counter="Messages Sent Per Second" instance="">0.00</msgsentpersec>
+ <bytessentcount counter="Bytes Sent Counter" instance="">0.00</bytessentcount>
+ <bytessentpersec counter="Bytes Sent Per Second" instance="">0.00</bytessentpersec>
+ <noradconnspersec counter="Norad Connects Per Sec" instance="">0.00</noradconnspersec>
+ <zero counter="This is zero" instance="">0.00</zero>
+</perfdata>
+
+{ total_rows: 1,
+  offset: 0,
+  rows: 
+   [ { id: 'de59b27d964ff24aee86fc765d00121a',
+       key: '127.0.0.1:10746',
+       value: [Object] } ] }
+opened socket on 40910 with server 127.0.0.1
+<?xml version="1.0" encoding="UTF-8" ?>
+<perfdata appname="ProxyServer" machinename="selee-dev.localdomain">
+ <status>OK</status>
+ <hostcount counter="Host Count" instance="">0.00</hostcount>
+ <clientcount counter="Client Count" instance="">0.00</clientcount>
+ <cpu counter="CPU Utilization %" instance="">0.70</cpu>
+ <normcpu counter="Normalized CPU Utilization %" instance="">0.18</normcpu>
+ <mem counter="Heap Usage in mB" instance="">1.58</mem>
+ <ctxsw counter="Context Switches Per Sec" instance="">399.65</ctxsw>
+ <maxconns counter="Max Connection Count" instance="">1000.00</maxconns>
+ <maxports counter="Max Port Count" instance="">11.00</maxports>
+ <timestamp counter="Timestamp" instance="">978588.00</timestamp>
+ <msgrecvcount counter="Messages Recv Counter" instance="">0.00</msgrecvcount>
+ <msgsentcount counter="Messages Sent Counter" instance="">0.00</msgsentcount>
+ <totalconns counter="Connection Count" instance="">0.00</totalconns>
+ <msgrecvpersec counter="Messages Recv Per Second" instance="">0.00</msgrecvpersec>
+ <msgsentpersec counter="Messages Sent Per Second" instance="">0.00</msgsentpersec>
+ <bytessentcount counter="Bytes Sent Counter" instance="">0.00</bytessentcount>
+ <bytessentpersec counter="Bytes Sent Per Second" instance="">0.00</bytessentpersec>
+ <noradconnspersec counter="Norad Connects Per Sec" instance="">0.00</noradconnspersec>
+ <zero counter="This is zero" instance="">0.00</zero>
+</perfdata>
+
+{ total_rows: 1,
+  offset: 0,
+  rows: 
+   [ { id: 'de59b27d964ff24aee86fc765d00121a',
+       key: '127.0.0.1:10746',
+       value: [Object] } ] }
+opened socket on 40910 with server 127.0.0.1
+<?xml version="1.0" encoding="UTF-8" ?>
+<perfdata appname="ProxyServer" machinename="selee-dev.localdomain">
+ <status>OK</status>
+ <hostcount counter="Host Count" instance="">0.00</hostcount>
+ <clientcount counter="Client Count" instance="">0.00</clientcount>
+ <cpu counter="CPU Utilization %" instance="">0.70</cpu>
+ <normcpu counter="Normalized CPU Utilization %" instance="">0.18</normcpu>
+ <mem counter="Heap Usage in mB" instance="">1.58</mem>
+ <ctxsw counter="Context Switches Per Sec" instance="">399.65</ctxsw>
+ <maxconns counter="Max Connection Count" instance="">1000.00</maxconns>
+ <maxports counter="Max Port Count" instance="">11.00</maxports>
+ <timestamp counter="Timestamp" instance="">978588.00</timestamp>
+ <msgrecvcount counter="Messages Recv Counter" instance="">0.00</msgrecvcount>
+ <msgsentcount counter="Messages Sent Counter" instance="">0.00</msgsentcount>
+ <totalconns counter="Connection Count" instance="">0.00</totalconns>
+ <msgrecvpersec counter="Messages Recv Per Second" instance="">0.00</msgrecvpersec>
+ <msgsentpersec counter="Messages Sent Per Second" instance="">0.00</msgsentpersec>
+ <bytessentcount counter="Bytes Sent Counter" instance="">0.00</bytessentcount>
+ <bytessentpersec counter="Bytes Sent Per Second" instance="">0.00</bytessentpersec>
+ <noradconnspersec counter="Norad Connects Per Sec" instance="">0.00</noradconnspersec>
+ <zero counter="This is zero" instance="">0.00</zero>
+</perfdata>
+
+{ total_rows: 1,
+  offset: 0,
+  rows: 
+   [ { id: 'de59b27d964ff24aee86fc765d00121a',
+       key: '127.0.0.1:10746',
+       value: [Object] } ] }
+opened socket on 40910 with server 127.0.0.1
+<?xml version="1.0" encoding="UTF-8" ?>
+<perfdata appname="ProxyServer" machinename="selee-dev.localdomain">
+ <status>OK</status>
+ <hostcount counter="Host Count" instance="">0.00</hostcount>
+ <clientcount counter="Client Count" instance="">0.00</clientcount>
+ <cpu counter="CPU Utilization %" instance="">0.70</cpu>
+ <normcpu counter="Normalized CPU Utilization %" instance="">0.18</normcpu>
+ <mem counter="Heap Usage in mB" instance="">1.58</mem>
+ <ctxsw counter="Context Switches Per Sec" instance="">399.65</ctxsw>
+ <maxconns counter="Max Connection Count" instance="">1000.00</maxconns>
+ <maxports counter="Max Port Count" instance="">11.00</maxports>
+ <timestamp counter="Timestamp" instance="">978588.00</timestamp>
+ <msgrecvcount counter="Messages Recv Counter" instance="">0.00</msgrecvcount>
+ <msgsentcount counter="Messages Sent Counter" instance="">0.00</msgsentcount>
+ <totalconns counter="Connection Count" instance="">0.00</totalconns>
+ <msgrecvpersec counter="Messages Recv Per Second" instance="">0.00</msgrecvpersec>
+ <msgsentpersec counter="Messages Sent Per Second" instance="">0.00</msgsentpersec>
+ <bytessentcount counter="Bytes Sent Counter" instance="">0.00</bytessentcount>
+ <bytessentpersec counter="Bytes Sent Per Second" instance="">0.00</bytessentpersec>
+ <noradconnspersec counter="Norad Connects Per Sec" instance="">0.00</noradconnspersec>
+ <zero counter="This is zero" instance="">0.00</zero>
+</perfdata>
+

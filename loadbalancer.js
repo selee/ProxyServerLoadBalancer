@@ -443,4 +443,4 @@ for(var i = 0; i < numCluster; i++)
 */
 //testServer.listen(4910);
 perfPort.listen(10000);
-syslog.log('Load balancer is now running.');
+syslog.log(syslog.LOG_INFO, 'Load balancer is now running.');
