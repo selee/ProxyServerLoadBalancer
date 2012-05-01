@@ -7,9 +7,8 @@ var express = require('express');
 var http = require('http');
 var https = require('https');
 var xml = require('node-xml');
-var syslog = require('syslog');
-var logger = syslog.createClient(514, 'localhost');
-var cluster = require('cluster');
+var syslog = require('node-syslog');
+//var cluster = require('cluster');
 var fs = require('fs');
 //for connecting to relay perfmonitor
 var net = require('net');
@@ -17,37 +16,38 @@ var couchdb = require('felix-couchdb');
 var client = couchdb.createClient(5984, 'localhost');
 var db = client.db('relay_servers');
 var reqPerGame = {};
-logger.info('Starting load balancer.');
+syslog.init("load-balancer", syslog.LOG_PID | syslog.LOG_ODELAY, syslog.LOG_USER);
+syslog.log(syslog.LOG_INFO, 'Starting load balancer.');
 
 if(prod)
 {
 	privateKey = fs.readFileSync(__dirname+'/ssl/server.key').toString();
 	certificate = fs.readFileSync(__dirname+'/ssl/server.crt').toString();
 	ca = fs.readFileSync(__dirname+'/ssl/ca.crt').toString();
-	logger.info('Production environment, requiring certificate.');
+	syslog.log(syslog.LOG_INFO, 'Production environment, requiring certificate.');
 }
 
-var lb = express();
+var lb = express.createServer();
 
-var testServer = express.createServer();
+//var testServer = express.createServer();
 var perfPort = express.createServer();
 perfPort.use(express.bodyParser());
 lb.use(express.bodyParser());
-testServer.use(express.bodyParser());
+//testServer.use(express.bodyParser());
 var serverData = new Array();
 
 var probabilityMax;
-
+/*
 testServer.get('/', function(req,res){
 	res.contentType("text/xml");
 	res.sendfile('test.xml');
 });
-
+*/
 lb.get('/', function(req, res){
 	var failIp = req.param('fail', '');
 	if(failIp != '')
 	{
-		logger.warning('Client reported relay server at ' + failIp + ' failed.');
+		syslog.log(syslog.LOG_WARNING, 'Client reported relay server at ' + failIp + ' failed.');
 		if(serverData[failIp])
 		{
 			if(serverData[failIp] != null)
@@ -55,19 +55,13 @@ lb.get('/', function(req, res){
 				serverData[failIp].probability -= 1;
 				if(serverData[failIp].probability <= 0)
 				{
-					logger.error('Too many fails. Removing server ' + failIp);
+					syslog.log(syslog.LOG_ERR, 'Too many fails. Removing server ' + failIp);
 					removeIP(failIp);
 				}
 			}
 		}
 	}
 	var serv = getServer();
-	/*
-	if(ip == failIp && serverData.length ==)
-	{
-		return;
-	}
-	*/
 	var i = 0;
 	while(serv && serv.ip + ':' + serv.port == failIp)
 	{
@@ -95,7 +89,7 @@ lb.get('/', function(req, res){
 	}
 	else
 	{
-		logger.emerg('No servers were found!');
+		syslog.log(syslog.LOG_ERR, 'No servers were found!');
 		res.send({error: 'All the servers broke.'});
 	}
 });
@@ -121,7 +115,7 @@ lb.post('/add', function(req, res){
 	//TODO: get the actual IP and parse it
 	var ip = req.body.ip;
 	var port = req.body.port;
-	logger.info('Added relay server ' + ip + ':' + port);
+	syslog.log(syslog.LOG_INFO, 'Added relay server ' + ip + ':' + port);
 	addIP(ip, port);
 	res.send('ok');
 });
@@ -145,7 +139,7 @@ function addIP(ip, port)
 		});
 	});
 	post.on('error', function(error) {
-		logger.error('Failed to connect to couchdb to add server!');
+		syslog.log(syslog.LOG_ERR, 'Failed to connect to couchdb to add server!');
 	});
 	post.write(JSON.stringify({ip:ip, port:port}));
 	post.end();
@@ -155,7 +149,7 @@ lb.post('/remove', function(req, res){
 	var ip = req.body.ip;
 	console.log('remove: ' + ip);
 	removeIP(ip);
-	logger.info('Removed relay server ' + ip);
+	syslog.log(syslog.LOG_INFO, 'Removed relay server ' + ip);
 	res.send('ok');
 });
 
@@ -178,7 +172,7 @@ function removeIP(ip)
 		});
 	});
 	del.on('error', function(error) {
-		logger.error('Failed to connect to couch db for server removal!');
+		syslog.log(syslog.LOG_ERR, 'Failed to connect to couch db for server removal!');
 	});
 	//del.write(JSON.stringify({ip:ip, port:serverData[server].port}));
 	del.end();
@@ -255,7 +249,7 @@ setInterval(function(){
 				socket.on('error', function(error) {
 					//have to get perf monitor to parse this
 					serverData[server].status = 'FAIL';
-					logger.error('Unable to connect to server ' + serverData[server].ip + serverData[server].port);
+					syslog.log(syslog.LOG_ERR, 'Unable to connect to server ' + serverData[server].ip + serverData[server].port);
 				});
 				socket.end();
 			}
@@ -312,7 +306,7 @@ setInterval(function()
 		});
 	});
 	post.on('error', function(error) {
-		logger.error('Could not connect to metrics.gamespy.net');
+		syslog.log(syslog.LOG_ERR, 'Could not connect to metrics.gamespy.net');
 	});
 	post.write(JSON.stringify(stats));
 	post.end();
@@ -330,7 +324,7 @@ setInterval(function()
 			});
 		});
 		post.on('error', function(error) {
-			logger.error('Could not connect to metrics.gamespy.net');
+			syslog.log(syslog.LOG_ERR, 'Could not connect to metrics.gamespy.net');
 		});
 		post.write(JSON.stringify({relay_requests: reqPerGame[id]}));
 		post.end();
@@ -392,11 +386,12 @@ perfPort.get('/', function(req,res){
 
 
 //start clustered service
-var numCluster = prod ? 4 : 1;
+/*var numCluster = prod ? 4 : 1;
 for(var i = 0; i < numCluster; i++)
 {
 	if(cluster.isMaster && i == 0)
 	{
+	*/
 		client.request({
 			method: 'PUT',
 			path: '/relay_servers'
@@ -420,15 +415,17 @@ for(var i = 0; i < numCluster; i++)
 				console.log('creating relay server view.');
 			});
 		}, 1000);
+/*
 	} if(cluster.isMaster && prod){
 		cluster.fork();
 		cluster.on('death', function(worker){
-			logger.info('Worker thread died, restarting.');
+			syslog.log(syslog.LOG_INFO, 'Worker thread died, restarting.');
 			cluster.fork();
 		});
 	}
 	else
 	{
+	*/
 		if(prod)
 		{
 			https.createServer({key:privateKey, 
@@ -440,10 +437,10 @@ for(var i = 0; i < numCluster; i++)
 		}else{
 			lb.listen(3000);
 		}
-
+/*
 	}
 }
-
-testServer.listen(4910);
+*/
+//testServer.listen(4910);
 perfPort.listen(10000);
-logger.log('Load balancer is now running.');
+syslog.log('Load balancer is now running.');
