@@ -191,7 +191,7 @@ setInterval(function(){
 			{
 				return;
 			}
-			console.log(data);
+			//console.log(data);
 			var rows = data.rows;
 			
 			var couchData = {};
@@ -281,27 +281,31 @@ setInterval(function()
 	stats.totalconns = 0;
 	stats.msgpersec = 0;
 	stats.remainconns = 0;
+	stats.bytessentpersec = 0;
 	for(ip in serverData)
 	{
 		stats.remainconns += serverData[ip].probability;
 		stats.totalconns += serverData[ip].totalconns;
 		stats.msgpersec += serverData[ip].msgsentpersec;
+		stats.bytessentpersec += serverData[ip].bytessentpersec;
 	}
 	
-	
 	var options = {
-		host: 'metrics.gamespy.net',
+//		host: 'metrics.gamespy.net',
+		host: 'gstapi-stgutil-01.sfdev.colo.ignops.com',
 		port: 80,
 		path: '/analytics/5823/relay_stats',
 		method: 'POST',
 		headers: {'Content-Type': 'application/json'}
 	};
 	var post = http.request(options, function(response){
+		console.log('response from stats');
 		var data = '';
 		response.on('data', function(chunk){
 			data += chunk;
 		});
 		response.on('end', function(){
+			console.log('end response from stats');
 			console.log(data);
 		});
 	});
@@ -377,6 +381,9 @@ perfPort.get('/', function(req,res){
 		xml += '<msgsentpersec counter="Messages Sent Per Second">';
 		xml += serverData[ip].msgsentpersec;
 		xml += '</msgsentpersec>';
+		xml += '<bytessentpersec counter="Bytes Sent Per Second">';
+		xml += serverData[ip].bytessentpersec;
+		xml += '</bytessentpersec>';
 		xml += '</data>';
 	}
 	xml += '</perfdata>';
