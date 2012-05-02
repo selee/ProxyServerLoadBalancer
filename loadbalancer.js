@@ -243,7 +243,7 @@ setInterval(function(){
 						});
 					});
 	
-					console.log(data);
+					//console.log(data);
 					parser.parseString(data);
 				});
 				socket.on('error', function(error) {
@@ -284,12 +284,12 @@ setInterval(function()
 	stats.bytessentpersec = 0;
 	for(ip in serverData)
 	{
-		stats.remainconns += serverData[ip].probability;
-		stats.totalconns += serverData[ip].totalconns;
-		stats.msgpersec += serverData[ip].msgsentpersec;
-		stats.bytessentpersec += serverData[ip].bytessentpersec;
+		stats.remainconns += parseFloat(serverData[ip].probability);
+		stats.totalconns += parseFloat(serverData[ip].totalconns);
+		stats.msgpersec += parseFloat(serverData[ip].msgsentpersec);
+		stats.bytessentpersec += parseFloat(serverData[ip].bytessentpersec);
 	}
-	
+	console.log(JSON.stringify(stats));	
 	var options = {
 //		host: 'metrics.gamespy.net',
 		host: 'gstapi-stgutil-01.sfdev.colo.ignops.com',
