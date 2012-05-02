@@ -16,6 +16,7 @@ var couchdb = require('felix-couchdb');
 var client = couchdb.createClient(5984, 'localhost');
 var db = client.db('relay_servers');
 var reqPerGame = {};
+var failedServers = new Array();
 syslog.init("load-balancer", syslog.LOG_PID | syslog.LOG_ODELAY, syslog.LOG_USER);
 syslog.log(syslog.LOG_INFO, 'Starting load balancer.');
 
@@ -55,8 +56,9 @@ lb.get('/', function(req, res){
 				serverData[failIp].probability -= 1;
 				if(serverData[failIp].probability <= 0)
 				{
-					syslog.log(syslog.LOG_ERR, 'Too many fails. Removing server ' + failIp);
-					removeIP(failIp);
+					syslog.log(syslog.LOG_ERR, 'Too many fails. Sending an error for: ' + failIp);
+					if(failedServers.indexOf(failIp) == -1)
+						failedServers.push(failIp);
 				}
 			}
 		}
@@ -155,6 +157,9 @@ lb.post('/remove', function(req, res){
 
 function removeIP(ip)
 {
+	if(!serverData[ip])
+		return;
+
 	var options = {
 		host: 'localhost',
 		port: 5984,
@@ -221,9 +226,15 @@ setInterval(function(){
 				socket.on('data', function(chunk){
 					data += chunk;
 				}).on('end', function(){
+					//server not quite ready yet
 					if(data == undefined)
 					{
 						return;
+					}
+					//server back online, remove from failed server list
+					if(failedServers.indexOf(server) != -1)
+					{
+						failedServers.splice(failedServers.indexOf(server), 1);
 					}
 
 					//console.log("Server Data:\n" + data);
@@ -249,6 +260,10 @@ setInterval(function(){
 				socket.on('error', function(error) {
 					//have to get perf monitor to parse this
 					serverData[server].status = 'FAIL';
+					if(failedServers.indexOf(server) == -1)
+					{
+						failedServers.push(server);
+					}
 					syslog.log(syslog.LOG_ERR, 'Unable to connect to server ' + serverData[server].ip + serverData[server].port);
 				});
 				socket.end();
@@ -343,6 +358,15 @@ perfPort.get('/', function(req,res){
 	//construct XML
 	var xml = '<perfdata appname="ProxyServerLoadBalancer" machinename="PSLB01">';
 	xml += '<status>OK</status>';
+	xml += '<failedservercount counter="Failed Server Count">';
+	xml += failedServers.length;
+	xml += '</failedservercount>';
+	if(failedServers.length > 0)
+	{
+		xml += '<failedservers>';
+		xml += failedServers.toString();
+		xml += '</failedservers>';
+	}
 	for(ip in serverData)
 	{
 		//happens if the server has been added but not polled yet
