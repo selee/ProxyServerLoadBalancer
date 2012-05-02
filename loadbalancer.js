@@ -65,7 +65,8 @@ lb.get('/', function(req, res){
 	}
 	var serv = getServer();
 	var i = 0;
-	while(serv && serv.ip + ':' + serv.port == failIp)
+	//check to see if serv is not null, is not in the failed server list and was not reported as just failed
+	while(serv && (failedServers.indexOf(serv.ip + ':' + serv.port) != -1 || serv.ip + ':' + serv.port == failIp))
 	{
 		serv = getServer();
 		i++;
