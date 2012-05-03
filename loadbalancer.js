@@ -99,6 +99,9 @@ lb.get('/', function(req, res){
 
 function getServer()
 {
+	//no servers to connect to
+	if(probabilityMax == 0)
+		return null;
 	var random = Math.random() * probabilityMax;
 	var current = 0;
 	var i;
@@ -118,6 +121,8 @@ lb.post('/add', function(req, res){
 	//TODO: get the actual IP and parse it
 	var ip = req.body.ip;
 	var port = req.body.port;
+	if(serverData[ip + ':' + port] != undefined)
+		return;
 	syslog.log(syslog.LOG_INFO, 'Added relay server ' + ip + ':' + port);
 	addIP(ip, port);
 	res.send('ok');
@@ -261,6 +266,10 @@ setInterval(function(){
 				socket.on('error', function(error) {
 					//have to get perf monitor to parse this
 					serverData[server].status = 'FAIL';
+					//since the server failed, do not allocate anything to it
+					serverData[server].maxconns = 0;
+					serverData[server].totalconns = 0;
+					serverData[server].probability = 0;
 					if(failedServers.indexOf(server) == -1)
 					{
 						failedServers.push(server);
@@ -368,8 +377,10 @@ perfPort.get('/', function(req,res){
 		xml += failedServers.toString();
 		xml += '</failedservers>';
 	}
+	var serverCount = 0;
 	for(ip in serverData)
 	{
+		serverCount++;
 		//happens if the server has been added but not polled yet
 		if(serverData[ip].hostcount == undefined)
 			continue;
@@ -411,6 +422,9 @@ perfPort.get('/', function(req,res){
 		xml += '</bytessentpersec>';
 		xml += '</data>';
 	}
+	xml += '<servercount counter="Server Count">';
+	xml += serverCount;
+	xml += '</servercount>';
 	xml += '</perfdata>';
 	res.contentType('text/xml');
 	res.send(xml);
