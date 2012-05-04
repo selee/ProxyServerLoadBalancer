@@ -143,7 +143,7 @@ function addIP(ip, port)
 			data += chunk;
 		});
 		response.on('end', function(){
-			console.log(data);
+	//		console.log(data);
 		});
 	});
 	post.on('error', function(error) {
@@ -155,7 +155,6 @@ function addIP(ip, port)
 
 lb.post('/remove', function(req, res){
 	var ip = req.body.ip;
-	console.log('remove: ' + ip);
 	removeIP(ip);
 	syslog.log(syslog.LOG_INFO, 'Removed relay server ' + ip);
 	res.send('ok');
@@ -179,7 +178,7 @@ function removeIP(ip)
 			data += chunk;
 		});
 		response.on('end', function(){
-			console.log(data);
+			//console.log(data);
 		});
 	});
 	del.on('error', function(error) {
@@ -228,7 +227,7 @@ setInterval(function(){
 			{
 				var socket = net.createConnection(40910, serverData[server].ip);
 				var data = '';
-				console.log('opened socket on 40910 with server ' + serverData[server].ip);
+				//console.log('opened socket on 40910 with server ' + serverData[server].ip);
 				socket.on('data', function(chunk){
 					data += chunk;
 				}).on('end', function(){
@@ -314,7 +313,7 @@ setInterval(function()
 		stats.msgpersec += parseFloat(serverData[ip].msgsentpersec);
 		stats.bytessentpersec += parseFloat(serverData[ip].bytessentpersec);
 	}
-	console.log(JSON.stringify(stats));	
+	//console.log(JSON.stringify(stats));	
 	var options = {
 //		host: 'metrics.gamespy.net',
 		host: 'gstapi-stgutil-01.sfdev.colo.ignops.com',
@@ -324,14 +323,14 @@ setInterval(function()
 		headers: {'Content-Type': 'application/json'}
 	};
 	var post = http.request(options, function(response){
-		console.log('response from stats');
+		//console.log('response from stats');
 		var data = '';
 		response.on('data', function(chunk){
 			data += chunk;
 		});
 		response.on('end', function(){
-			console.log('end response from stats');
-			console.log(data);
+			//console.log('end response from stats');
+			//console.log(data);
 		});
 	});
 	post.on('error', function(error) {
@@ -349,7 +348,7 @@ setInterval(function()
 				data += chunk;
 			});
 			response.on('end', function(){
-				console.log(data);
+				//console.log(data);
 			});
 		});
 		post.on('error', function(error) {
